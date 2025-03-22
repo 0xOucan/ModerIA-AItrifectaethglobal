@@ -22,6 +22,7 @@ import * as readline from "readline";
 import { TelegramInterface } from "./telegram-interface.js";
 import "reflect-metadata";
 import { recallTestActionProvider } from "./action-providers/recall-test/index.js";
+import { marketplaceActionProvider } from "./action-providers/marketplace/index.js";
 import { createPublicClient, http } from 'viem';
 import { base, baseSepolia } from 'viem/chains';
 import { privateKeyToAccount } from "viem/accounts";
@@ -174,6 +175,7 @@ async function initializeAgent() {
         walletActionProvider(),
         erc20ActionProvider(),
         recallTestActionProvider(),
+        marketplaceActionProvider(),
       ],
     });
 
@@ -202,14 +204,13 @@ async function initializeAgent() {
         - Store, retrieve, and query data on the Recall Network
         - Check balance of Recall accounts
 
-        Recall Marketplace - Service Marketplace on Recall Network:
-        - List services as a provider
-        - Find services based on criteria (type, date, price, tags)
-        - Book services as a client
-        - Store meeting notes for completed services
-        - Submit reviews for services
+        Service Marketplace - Decentralized Service Booking Platform:
+        - Create a marketplace client for the testnet
+        - Create and list services with availability and pricing
+        - Book available services as a client
+        - Complete services and add meeting notes
         - Handle disputes and resolutions
-
+        
         Important Network Information:
         - Recall Network works on its own testnet
         - Check network before operations
@@ -227,22 +228,18 @@ async function initializeAgent() {
            - "Query objects in bucket 'my-data' with prefix 'hello/'"
            - "Get object with key 'hello/world' from bucket 'my-data'"
 
-        Recall Marketplace Operations Guide:
-        1. List a service (as provider):
-           - "List a service as a provider with name 'AI Tutor', type 'education', price 50, duration 60 minutes"
-        2. Find services (as client):
-           - "Find services with type 'education' under $100"
-        3. Book a service:
-           - "Book service with ID 'service-12345' as 'John Doe'"
-        4. After a meeting:
-           - "Store meeting notes for booking 'booking-12345' with content 'Discussed AI fundamentals'"
-        5. Review a service:
-           - "Review booking 'booking-12345' with rating 5 and comment 'Great service!'"
-        6. Resolve a dispute (if one was raised):
-           - "Resolve dispute for booking 'booking-12345' with refund 50%"
-
+        Service Marketplace Operations Guide:
+        1. First create a marketplace client:
+           - "Create a marketplace client for testnet"
+        2. Then create or book services:
+           - For service providers: "Create a service with title 'Web Development'"
+           - For clients: "Book a service with ID 'service_123'"
+        3. After the service is delivered:
+           - Complete the service: "Complete service with booking ID 'booking_123' with notes 'Service completed successfully'"
+           - If there are issues: "File a dispute for booking 'booking_123'"
+        
         Example Commands:
-        Recall Storage Operations:
+        Recall Operations:
         - "Create a Recall client for testnet"
         - "Purchase 0.1 ETH worth of Recall credits"
         - "Create a bucket named 'user-data'"
@@ -250,14 +247,16 @@ async function initializeAgent() {
         - "Query objects in bucket 'user-data' with prefix 'profiles/'"
         - "Get object with key 'profiles/alice' from bucket 'user-data'"
 
-        Recall Marketplace Operations:
-        - "List a service with title 'AI Tutoring Session', type 'education', price 75 USD"
-        - "Find education services between $50 and $150 with tag 'AI'"
-        - "Book service 'service-12345' as client 'Bob Smith'"
-        - "Store meeting notes for booking 'booking-12345'"
-        - "Review booking 'booking-12345' with rating 4 and comment 'Good session!'"
-        - "Raise a dispute for booking 'booking-12345' with reason 'Session was cut short'"
-        - "Resolve dispute for booking 'booking-12345' with 25% refund"
+        Marketplace Operations:
+        - "Create a marketplace client for testnet"
+        - "Create a service with title 'Web Development', description 'I can build websites', price '100', date '2023-12-01', start time '10:00', end time '12:00', time zone 'UTC'"
+        - "List available services"
+        - "Get service details for service ID 'service_123'"
+        - "Book service with ID 'service_123', client name 'John Doe', client email 'john@example.com', meeting platform 'zoom'"
+        - "List bookings for provider 'Alice'"
+        - "Complete service with booking ID 'booking_123', meeting notes 'Service completed as expected', successful 'true'"
+        - "File a dispute for booking 'booking_123' with reason 'Service not as described'"
+        - "Resolve dispute for booking 'booking_123' with resolution 'partial_refund', refund amount '50', notes 'Partial refund agreed upon'"
 
         Get the wallet details first to see what network you're on and what tokens are available.
       `,
@@ -406,7 +405,6 @@ async function chooseMode(): Promise<"chat" | "auto" | "telegram"> {
     console.log("1. chat      - Interactive chat mode");
     console.log("2. telegram  - Telegram bot mode");
     console.log("3. auto      - Autonomous action mode");
-    console.log("4. exit      - Exit the application");
 
     const choice = (await question("\nChoose a mode (enter number or name): "))
       .toLowerCase()
@@ -420,9 +418,6 @@ async function chooseMode(): Promise<"chat" | "auto" | "telegram"> {
       return "telegram";
     } else if (choice === "3" || choice === "auto") {
       return "auto";
-    } else if (choice === "4" || choice === "exit") {
-      console.log("Exiting application...");
-      process.exit(0);
     }
     console.log("Invalid choice. Please try again.");
   }
