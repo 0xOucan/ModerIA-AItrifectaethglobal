@@ -38,8 +38,56 @@ export class TelegramInterface {
       );
       this.bot.sendMessage(
         chatId,
-        "Hello! I am your AI assistant. How can I help you today?\nUse /exit to return to terminal or /kill to shut down the application.",
+        "Hello! I am your AI assistant for interacting with the Recall Network. Use /menu to see available commands.\n\nUse /exit to return to terminal or /kill to shut down the application.",
+        { parse_mode: "Markdown" }
       );
+    });
+
+    // Handle /menu command
+    this.bot.onText(/\/menu/, (msg) => {
+      const chatId = msg.chat.id;
+      if (this.isStarted) {
+        const menuText = `
+*Recall Network Bot Commands*
+
+*System Commands:*
+/start - Start or restart the bot
+/menu - Show this menu
+/exit - Exit to terminal
+/kill - Shut down the application
+
+*Recall Storage Operations:*
+\`\`\`
+Create a Recall client for testnet
+Purchase 0.1 ETH worth of Recall credits
+Create a bucket named "my-data"
+Add object with key "hello/world" and content "Hello World" to bucket "my-data"
+Query objects in bucket "my-data" with prefix "hello/"
+Get object with key "hello/world" from bucket "my-data"
+\`\`\`
+
+*Recall Marketplace Operations:*
+\`\`\`
+List a service with title "AI Tutoring Session", type "education", price 75 USD
+Find education services between $50 and $150 with tag "AI"
+Book service "service-12345" as client "Bob Smith"
+Store meeting notes for booking "booking-12345"
+Review booking "booking-12345" with rating 4 and comment "Good session!"
+Raise a dispute for booking "booking-12345" with reason "Session was cut short"
+Resolve dispute for booking "booking-12345" with 25% refund
+\`\`\`
+
+*Available Service Types:*
+- education
+- consulting
+- mentoring
+- tutoring
+- coaching
+- language
+- other
+`;
+        this.bot.sendMessage(chatId, menuText, { parse_mode: "Markdown" });
+      }
     });
 
     // Handle /exit command

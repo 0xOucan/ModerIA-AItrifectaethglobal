@@ -1,51 +1,99 @@
 import { z } from "zod";
 
+// Basic schemas for the Recall action provider
 export const CreateRecallClientSchema = z.object({
-  networkName: z.enum(["testnet", "mainnet"]),
+  networkName: z.string()
 });
 
 export const GetRecallBalanceSchema = z.object({
-  address: z.string().optional(),
+  address: z.string().optional()
 });
 
 export const StoreRecallDataSchema = z.object({
   key: z.string(),
-  value: z.any(),
-  options: z
-    .object({
-      permanent: z.boolean().optional(),
-      private: z.boolean().optional(),
-    })
-    .optional(),
+  value: z.string()
 });
 
 export const RetrieveRecallDataSchema = z.object({
   key: z.string(),
+  bucket: z.string().optional()
 });
 
 export const PurchaseRecallCreditSchema = z.object({
-  amount: z.string().describe("Amount of ETH to convert to credits (e.g. '1' for 1 ETH)"),
+  amount: z.string() // Amount of ETH to spend on credits
 });
 
 export const CreateRecallBucketSchema = z.object({
-  name: z.string().optional().describe("Optional name for the bucket"),
+  name: z.string().optional()
 });
 
 export const AddObjectToBucketSchema = z.object({
-  bucket: z.string().describe("Bucket ID to add the object to"),
-  key: z.string().describe("Key/path for the object"),
-  content: z.string().describe("Content to store"),
-  contentType: z.string().optional().describe("Optional content type (e.g. 'text/plain')"),
+  bucket: z.string(),
+  key: z.string(),
+  content: z.string(),
+  contentType: z.string().optional()
 });
 
 export const QueryBucketObjectsSchema = z.object({
-  bucket: z.string().describe("Bucket ID to query objects from"),
-  prefix: z.string().optional().describe("Optional prefix to filter objects by"),
+  bucket: z.string(),
+  prefix: z.string().optional()
 });
 
 export const GetBucketObjectSchema = z.object({
-  bucket: z.string().describe("Bucket ID to get the object from"),
-  key: z.string().describe("Key/path of the object to retrieve"),
+  bucket: z.string(),
+  key: z.string()
+});
+
+// Marketplace schemas
+export const CreateServiceSchema = z.object({
+  providerName: z.string(),
+  providerWallet: z.string(),
+  serviceType: z.string(),
+  title: z.string(),
+  description: z.string(),
+  price: z.number(),
+  currency: z.string().default("USD"),
+  durationMinutes: z.number(),
+  date: z.string(),
+  time: z.string(),
+  timezone: z.string(),
+  meetingLink: z.string().optional(),
+  tags: z.array(z.string()).default([])
+});
+
+export const FindServicesSchema = z.object({
+  serviceType: z.string().optional(),
+  dateFrom: z.string().optional(),
+  dateTo: z.string().optional(),
+  priceMin: z.number().optional(),
+  priceMax: z.number().optional(),
+  tags: z.array(z.string()).optional()
+});
+
+export const CreateBookingSchema = z.object({
+  serviceId: z.string(),
+  clientName: z.string(),
+  clientWallet: z.string(),
+  notes: z.string().optional()
+});
+
+export const ReviewServiceSchema = z.object({
+  bookingId: z.string(),
+  rating: z.number().min(1).max(5),
+  comment: z.string(),
+  disputed: z.boolean().default(false),
+  disputeReason: z.string().optional()
+});
+
+export const StoreMeetingNotesSchema = z.object({
+  bookingId: z.string(),
+  notes: z.string()
+});
+
+export const ResolveDisputeSchema = z.object({
+  bookingId: z.string(),
+  resolution: z.string(),
+  refundPercentage: z.number().min(0).max(100)
 });
 
 export type CreateRecallClientInput = z.infer<typeof CreateRecallClientSchema>;
