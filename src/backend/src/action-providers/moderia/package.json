@@ -1,0 +1,14 @@
+{
+  "name": "moderia",
+  "version": "0.1.0",
+  "description": "Service booking system with escrow and quality evaluation for ETH Trifecta",
+  "type": "module",
+  "main": "index.js",
+  "dependencies": {
+    "@coinbase/agentkit": "latest",
+    "@recallnet/chains": "latest",
+    "@recallnet/sdk": "latest",
+    "viem": "latest",
+    "zod": "latest"
+  }
+}

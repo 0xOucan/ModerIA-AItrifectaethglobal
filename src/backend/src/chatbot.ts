@@ -25,6 +25,7 @@ import { recallTestActionProvider } from "./action-providers/recall-test/index.j
 import { serviceMarketplaceActionProvider } from "./action-providers/service-marketplace/index.js";
 import { erc20EscrowActionProvider } from "./action-providers/erc20-escrow/index.js";
 import { otterAiActionProvider } from "./action-providers/otter-ai/index.js";
+import { moderiaActionProvider } from "./action-providers/moderia/index.js";
 import { createPublicClient, http } from 'viem';
 import { base, baseSepolia } from 'viem/chains';
 import { privateKeyToAccount } from "viem/accounts";
@@ -180,6 +181,7 @@ async function initializeAgent() {
         serviceMarketplaceActionProvider(),
         erc20EscrowActionProvider(),
         otterAiActionProvider(),
+        moderiaActionProvider(),
       ],
     });
 
@@ -232,6 +234,16 @@ async function initializeAgent() {
         - Create summaries with action items
         - Authorize payments based on quality assessment
         - Store meeting data with searchable metadata
+
+        🌟 ModerIA - Complete Digital Deal Mediator:
+        - Orchestrate the entire service marketplace workflow
+        - Handle network switching between Recall and Base Sepolia
+        - Create and book services with rich metadata
+        - Process secure escrow payments in USDC
+        - Analyze service quality with AI tools
+        - Generate comprehensive transaction records
+        - Support demo mode for testing without real transactions
+        - Run automated demonstrations of the complete workflow
 
         Important Network Information:
         - 📋 Recall Network works on its own testnet
