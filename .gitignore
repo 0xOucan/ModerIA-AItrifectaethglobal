@@ -45,3 +45,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# temp storage directory
+/src/backend/temp_storage/
+/src/backend/temp_storage/*.json
+/temp_storage/

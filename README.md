@@ -1,6 +1,6 @@
 # 🌟 Moderia AI - Digital Deal Mediator
 
-Moderia is an AI agent that mediates digital deals between service providers and clients, powered by Nillion DB's secure data storage.
+Moderia is an AI agent that mediates digital deals between service providers and clients, powered by Recall Network's secure data storage.
 
 > "Modern mediator for digital deals"
 
@@ -34,6 +34,17 @@ The platform uses a secure escrow system for USDC token payments:
 - All transactions are recorded on Base Sepolia blockchain
 - Complete transparency with transaction history
 
+## 🎙️ Service Quality Verification with Otter AI
+
+The platform uses AI to monitor and verify service quality:
+
+- AI joins service delivery calls (like Google Meet)
+- Generates detailed transcripts of conversations
+- Creates summaries with action items and keywords
+- Analyzes service quality against predefined metrics
+- Recommends payment authorization based on quality scores
+- Provides valuable feedback for service improvement
+
 ## 📊 Database Schema
 
 ### Service Collection
@@ -59,6 +70,13 @@ The platform uses a secure escrow system for USDC token payments:
 - Payment records
 - Token transfers
 - Transaction status
+
+### Meeting Collection
+- Transcript data
+- Quality analysis
+- Summary information
+- Action items
+- Approval status
 
 ## 🤖 Mediation Features
 
@@ -89,10 +107,10 @@ The platform uses a secure escrow system for USDC token payments:
 
 The agent supports four operating modes:
 
-1. **Chat Mode**: Interactive command-line interface for direct user interaction
-2. **Autonomous Mode**: Bot operates independently, checking for disputes or upcoming bookings
-3. **Telegram Mode**: Interface through Telegram messenger
-4. **Demo Mode**: Run a guided demonstration of Moderia's capabilities
+1. **💬 Chat Mode**: Interactive command-line interface for direct user interaction
+2. **🤖 Autonomous Mode**: Bot operates independently, checking for disputes or upcoming bookings
+3. **📱 Telegram Mode**: Interface through Telegram messenger
+4. **🎮 Demo Mode**: Run a guided demonstration of Moderia's capabilities
 
 ### 🎮 Demo Mode
 The demo mode walks you through a complete service lifecycle:
@@ -152,46 +170,81 @@ SCHEMA_ID_REVIEW=your_schema_id_here
 
 ## 🔄 Workflow Example
 
-1. **Service Listing**: 
+1. **🛒 Service Listing**: 
    - Provider creates service (e.g., French lesson on Monday at 3PM)
    - Details stored in Recall Network with rich metadata
+   - Service appears in the marketplace with pricing and requirements
 
-2. **Discovery & Booking**:
+2. **💼 Discovery & Booking**:
    - Client searches for available services
    - Books and pays for chosen service (0.01 USDC)
    - Payment held in escrow on Base Sepolia
-   - Meeting link generated
+   - Meeting link generated and sent to both parties
 
-3. **Service Delivery**:
+3. **🤝 Service Delivery**:
    - Moderia sends reminders to both parties
-   - Agent joins the call via Otter AI to take notes
-   - Service is delivered
+   - Otter AI joins the call to monitor quality
+   - Service is delivered between provider and client
+   - AI records transcript and creates summary
 
-4. **Quality Assessment**:
+4. **📊 Quality Assessment**:
    - Otter AI analyzes call quality
-   - Generates transcript and summary
-   - Evaluates based on predetermined metrics
-   - Recommends payment authorization
+   - Generates transcript and summary with action items
+   - Evaluates based on predetermined metrics (engagement, objectives met, etc.)
+   - Recommends payment authorization with a quality score
 
-5. **Completion & Payment**:
-   - Upon positive quality assessment
-   - Escrow is released to provider
-   - Transaction recorded in Recall Network
-   - Optional reviews submitted
+5. **💰 Payment Processing**:
+   - Upon positive quality assessment (score above threshold)
+   - Agent releases escrow to provider through ERC20 transfer
+   - Transaction recorded with quality metrics in metadata
+   - Provider receives USDC payment in their wallet
 
-6. **Dispute Resolution** (if needed):
-   - Agent reviews meeting transcript
+6. **⭐ Feedback & Reviews**:
+   - Client can submit ratings and reviews
+   - Provider can respond to feedback
+   - All review data stored with transaction history
+   - Service reputation updated accordingly
+
+7. **⚖️ Dispute Resolution** (if needed):
+   - Agent reviews meeting transcript and quality assessment
    - Makes fair judgment based on evidence
-   - Issues appropriate compensation
-   - Updates transaction status
+   - Issues appropriate compensation (full/partial refund)
+   - Updates transaction status and notifies parties
 
 ## 📝 Development
 
 To extend Moderia's capabilities:
-1. Update the relevant action provider in `src/action-providers/nillion-db/`
+1. Update the relevant action provider in `src/backend/src/action-providers/`
 2. Add new schemas if needed
 3. Update environment variables accordingly
 4. Test thoroughly before deployment
+
+## 🧪 Testing
+
+### 🛒 Service Marketplace Test
+```
+node src/backend/dist/action-providers/service-marketplace/test.js
+```
+
+### 💰 ERC20 Escrow Test
+```
+node src/backend/dist/action-providers/erc20-escrow/test.js
+```
+
+To run in demo mode without blockchain transactions:
+```
+DEMO_MODE=true node src/backend/dist/action-providers/erc20-escrow/test.js
+```
+
+### 🎙️ Otter AI Test
+```
+node src/backend/dist/action-providers/otter-ai/test.js
+```
+
+### 🔄 Recall Network Test
+```
+node src/backend/dist/action-providers/recall-test/test.js
+```
 
 ## 📋 License
 

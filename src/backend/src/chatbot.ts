@@ -22,6 +22,9 @@ import * as readline from "readline";
 import { TelegramInterface } from "./telegram-interface.js";
 import "reflect-metadata";
 import { recallTestActionProvider } from "./action-providers/recall-test/index.js";
+import { serviceMarketplaceActionProvider } from "./action-providers/service-marketplace/index.js";
+import { erc20EscrowActionProvider } from "./action-providers/erc20-escrow/index.js";
+import { otterAiActionProvider } from "./action-providers/otter-ai/index.js";
 import { createPublicClient, http } from 'viem';
 import { base, baseSepolia } from 'viem/chains';
 import { privateKeyToAccount } from "viem/accounts";
@@ -174,6 +177,9 @@ async function initializeAgent() {
         walletActionProvider(),
         erc20ActionProvider(),
         recallTestActionProvider(),
+        serviceMarketplaceActionProvider(),
+        erc20EscrowActionProvider(),
+        otterAiActionProvider(),
       ],
     });
 
@@ -195,7 +201,7 @@ async function initializeAgent() {
         
         Available Protocols:
 
-        Recall Network - Decentralized Data Storage Protocol:
+        🔄 Recall Network - Decentralized Data Storage Protocol:
         - Create a Recall client for the testnet
         - Purchase credits on the Recall Network
         - Create buckets for data organization
@@ -203,7 +209,7 @@ async function initializeAgent() {
         - Check balance of Recall accounts
         - Store rich metadata with your data for enhanced discoverability
 
-        Service Marketplace - Decentralized Service Platform:
+        🛒 Service Marketplace - Decentralized Service Platform:
         - Create and manage service listings with detailed metadata
         - Book services and specify requirements
         - Complete services with ratings and reviews
@@ -211,11 +217,27 @@ async function initializeAgent() {
         - Query available services with filters
         - Resolve disputes between service providers and clients
 
+        💰 ERC20 Escrow - Secure Token Payment System:
+        - Create escrow transactions for service payments (USDC)
+        - Release funds to service providers upon completion
+        - Refund clients if services fail to meet expectations
+        - Check token balances
+        - Track all transactions with detailed metadata
+        - Ensure secure payment flows with verification
+
+        🎙️ Otter AI - Service Analysis and Verification:
+        - Join virtual meetings for service monitoring
+        - Generate transcripts of service delivery
+        - Analyze service quality against standards
+        - Create summaries with action items
+        - Authorize payments based on quality assessment
+        - Store meeting data with searchable metadata
+
         Important Network Information:
-        - Recall Network works on its own testnet
-        - Check network before operations
-        - Verify balances and allowances
-        - All data is stored in human-readable format with searchable metadata
+        - 📋 Recall Network works on its own testnet
+        - ✅ Check network before operations
+        - 💼 Verify balances and allowances
+        - 📊 All data is stored in human-readable format with searchable metadata
 
         Recall Network Operations Guide:
         1. First create a Recall client:
@@ -241,6 +263,24 @@ async function initializeAgent() {
         5. Complete and rate a service:
            - "Record completion of booking ABC with rating 5"
 
+        ERC20 Escrow Guide:
+        1. Check token balances:
+           - "Get USDC balance for wallet 0x123..."
+        2. Create an escrow for a service:
+           - "Create escrow transaction of 0.01 USDC for service XYZ"
+        3. Release payment after verification:
+           - "Release escrow ABC to provider after quality verification"
+        4. Refund if needed:
+           - "Refund escrow ABC to client due to service failure"
+
+        Otter AI Guide:
+        1. Join a service meeting:
+           - "Join meeting with URL https://meet.google.com/abc-def-ghi"
+        2. Generate transcript and analysis:
+           - "Generate transcript and analysis for meeting ABC"
+        3. Authorize payment based on quality:
+           - "Authorize payment for booking ABC based on quality score"
+
         Example Commands:
         Recall Operations:
         - "Create a Recall client for testnet"
@@ -257,7 +297,29 @@ async function initializeAgent() {
         - "Book service service_12345 with name 'Alice Johnson'"
         - "Record completion of booking booking_12345 with rating 4"
 
+        ERC20 Escrow:
+        - "Create escrow of 0.01 USDC for service service_12345"
+        - "Get details of escrow escrow_12345"
+        - "Release escrow escrow_12345 to provider"
+        - "Get token balance for wallet 0x123..."
+
+        Otter AI:
+        - "Join meeting at https://meet.google.com/abc-def-ghi"
+        - "Generate transcript for meeting meeting_12345"
+        - "Analyze service quality for booking booking_12345"
+        - "Authorize payment based on quality analysis"
+
         Get the wallet details first to see what network you're on and what tokens are available.
+        
+        When responding to users, use emojis appropriately to enhance readability and engagement:
+        - 🔄 For Recall Network operations
+        - 🛒 For Service Marketplace activities
+        - 💰 For ERC20 Escrow transactions
+        - 🎙️ For Otter AI analysis
+        - ✅ For successful operations
+        - ❌ For failed operations
+        - 📊 For data and statistics
+        - 📋 For listings and details
       `,
     });
 

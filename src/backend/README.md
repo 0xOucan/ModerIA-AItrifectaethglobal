@@ -90,6 +90,21 @@ ModerIA supports three operating modes:
 - 📈 View service history and analytics
 - 🤝 Resolve disputes between providers and clients
 
+### 💰 Secure Payment System
+- 💰 Create escrow transactions for service payments
+- 💸 Release funds upon quality verification
+- 💱 Process USDC tokens on Base Sepolia
+- 🔙 Refund funds for canceled or disputed services
+- 🔍 Track all payment transactions
+- 📊 Monitor wallet balances
+
+### 🎙️ Service Quality Verification
+- 💼 AI-powered service monitoring
+- 📄 Create detailed transcripts of service delivery
+- 📊 Analyze service quality against standards
+- ✅ Authorize payments based on quality scores
+- 📝 Generate actionable summary reports
+
 ### 💳 Credit Management
 - 💰 Purchase storage credits
 - 💼 Monitor credit balance

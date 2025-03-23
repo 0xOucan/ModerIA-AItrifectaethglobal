@@ -42,12 +42,25 @@ export class TelegramInterface {
       );
       this.bot.sendMessage(
         chatId,
-        "Hello! I am your AI assistant with Recall Network integration. I can help with:\n" +
+        "👋 Hello! I am your AI assistant with multiple integrations. I can help with:\n\n" +
+        "🔄 *Recall Network*\n" +
         "- Storing data with rich metadata\n" +
+        "- Creating buckets for organization\n" +
+        "- Querying stored information\n\n" +
+        "🛒 *Service Marketplace*\n" +
         "- Creating and managing service listings\n" +
         "- Booking services and processing payments\n" +
-        "- Searching and retrieving data\n\n" +
-        "Use /exit to return to terminal or /kill to shut down the application.",
+        "- Rating and reviewing completed services\n\n" +
+        "💰 *ERC20 Escrow*\n" +
+        "- Creating secure escrow transactions\n" +
+        "- Managing USDC payments on Base Sepolia\n" +
+        "- Releasing or refunding payments\n\n" +
+        "🎙️ *Otter AI*\n" +
+        "- Joining meetings to analyze service quality\n" +
+        "- Generating transcripts and summaries\n" +
+        "- Authorizing payments based on quality metrics\n\n" +
+        "Use /help for example commands, /exit to return to terminal, or /kill to shut down the application.",
+        { parse_mode: "Markdown" }
       );
     });
 
@@ -58,17 +71,27 @@ export class TelegramInterface {
         this.bot.sendMessage(
           chatId,
           "Here are some example commands you can try:\n\n" +
-          "1. *Recall Network Operations:*\n" +
+          "🔄 *Recall Network Operations:*\n" +
           "- Create a Recall client for testnet\n" +
           "- Purchase 0.01 ETH worth of Recall credits\n" +
           "- Create a bucket for my data\n" +
           "- Add an object with metadata to my bucket\n\n" +
-          "2. *Service Marketplace:*\n" +
+          "🛒 *Service Marketplace:*\n" +
           "- Create a service listing for French teaching\n" +
           "- Book a service with ID xyz\n" +
           "- Query available services\n" +
           "- Complete a service and leave a rating\n\n" +
-          "Just type your request normally and I'll help you!",
+          "💰 *ERC20 Escrow:*\n" +
+          "- Get USDC balance for my wallet\n" + 
+          "- Create escrow of 0.01 USDC for service XYZ\n" +
+          "- Release escrow ABC to provider\n" +
+          "- Get all my escrow transactions\n\n" +
+          "🎙️ *Otter AI:*\n" +
+          "- Join meeting at [URL]\n" +
+          "- Generate transcript for meeting ABC\n" +
+          "- Analyze quality of service XYZ\n" +
+          "- Authorize payment based on quality score\n\n" +
+          "Just type your request naturally and I'll help you! 🤖",
           { parse_mode: "Markdown" }
         );
       }
@@ -78,7 +101,7 @@ export class TelegramInterface {
     this.bot.onText(/\/exit/, async (msg) => {
       const chatId = msg.chat.id;
       if (this.isStarted) {
-        await this.bot.sendMessage(chatId, "Goodbye! Returning to terminal...");
+        await this.bot.sendMessage(chatId, "👋 Goodbye! Returning to terminal...");
         console.log("Telegram session ended. Returning to terminal...");
         this.bot.stopPolling();
         this.options.onExit();
@@ -89,7 +112,7 @@ export class TelegramInterface {
     this.bot.onText(/\/kill/, async (msg) => {
       const chatId = msg.chat.id;
       if (this.isStarted) {
-        await this.bot.sendMessage(chatId, "Shutting down the application...");
+        await this.bot.sendMessage(chatId, "🛑 Shutting down the application...");
         console.log("Kill command received. Shutting down...");
         this.bot.stopPolling();
         this.options.onKill();
@@ -133,7 +156,7 @@ export class TelegramInterface {
           console.error("Error processing message:", error);
           await this.bot.sendMessage(
             chatId,
-            "Sorry, I encountered an error processing your message.",
+            "❌ Sorry, I encountered an error processing your message. Please try again.",
           );
         }
       }
