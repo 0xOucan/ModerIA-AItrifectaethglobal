@@ -192,32 +192,73 @@ export class ModeriaActionProvider extends ActionProvider<EvmWalletProvider> {
     args: z.infer<typeof CreateRecallBucketSchema>
   ): Promise<string> {
     try {
-      if (!this.agentClient) {
-        return ERROR_MESSAGES.MISSING_CLIENT;
+      let client;
+      const bucketName = args.name || `bucket-${Date.now()}`;
+      
+      // First, use specific client based on predefined bucket names if available
+      if (bucketName === BUCKET_NAMES.SERVICES && this.teacherClient) {
+        client = this.teacherClient;
+      } else if (bucketName === BUCKET_NAMES.BOOKINGS && this.studentClient) {
+        client = this.studentClient;
+      } else if (bucketName === BUCKET_NAMES.TRANSACTIONS && this.agentClient) {
+        client = this.agentClient;
+      } else if (bucketName === BUCKET_NAMES.EVALUATIONS && this.agentClient) {
+        client = this.agentClient;
+      } 
+      // For custom bucket names or fallbacks, choose the best available client
+      else {
+        // For service-data, use teacher client as it's likely for services
+        if (bucketName.toLowerCase().includes('service') && this.teacherClient) {
+          client = this.teacherClient;
+        }
+        // For any bucket with "booking" in name, use student
+        else if (bucketName.toLowerCase().includes('booking') && this.studentClient) {
+          client = this.studentClient;
+        }
+        // Otherwise use any available client with teacherClient as priority
+        else if (this.teacherClient) {
+          client = this.teacherClient;
+        } 
+        else if (this.studentClient) {
+          client = this.studentClient;
+        }
+        else if (this.agentClient) {
+          client = this.agentClient;
+        } 
+        else {
+          return ERROR_MESSAGES.MISSING_CLIENT;
+        }
       }
 
-      const bucketManager = this.agentClient.bucketManager();
+      const bucketManager = client.bucketManager();
       
-      // Create a new bucket
-      const { result: { bucket }, meta } = await bucketManager.create();
-      
-      // Store the bucket ID with a name if provided
-      const bucketName = args.name || `bucket-${Date.now()}`;
-      this.buckets[bucketName] = bucket;
-      
-      // Generate portal URL
-      const portalUrl = `${RECALL_PORTAL_URLS[this.currentRecallNetwork as RecallNetworkType || "testnet"]}/buckets/${bucket}`;
-      
-      // Generate explorer URL if transaction hash is available
-      let explorerTxUrl = "";
-      if (meta?.tx?.transactionHash) {
-        explorerTxUrl = `\nExplorer: ${RECALL_EXPLORER_URLS[this.currentRecallNetwork as RecallNetworkType || "testnet"]}/tx/${meta.tx.transactionHash}`;
+      // Create a new bucket with proper error handling
+      try {
+        console.log(`Creating bucket "${bucketName}" with client for user type: ${client === this.teacherClient ? 'teacher' : client === this.studentClient ? 'student' : 'agent'}`);
+        const { result: { bucket }, meta } = await bucketManager.create();
+        
+        // Store the bucket ID with a name if provided
+        this.buckets[bucketName] = bucket;
+        
+        // Generate portal URL with proper fallback
+        const networkName = this.currentRecallNetwork || "testnet";
+        const portalUrl = `${RECALL_PORTAL_URLS[networkName as RecallNetworkType]}/buckets/${bucket}`;
+        
+        // Generate explorer URL if transaction hash is available
+        let explorerTxUrl = "";
+        if (meta?.tx?.transactionHash) {
+          const networkName = this.currentRecallNetwork || "testnet";
+          explorerTxUrl = `\nExplorer: ${RECALL_EXPLORER_URLS[networkName as RecallNetworkType]}/tx/${meta.tx.transactionHash}`;
+        }
+        
+        // Wait for 5 seconds after blockchain operation
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        
+        return `Successfully created bucket with ID: ${bucket}. You can refer to this bucket as "${bucketName}" in future operations.\nPortal: ${portalUrl}${explorerTxUrl}`;
+      } catch (error) {
+        console.error(`Failed to create bucket "${bucketName}". Error: ${error instanceof Error ? error.message : String(error)}`);
+        return `${ERROR_MESSAGES.FAILED_BUCKET_CREATION} Error: ${error instanceof Error ? error.message : String(error)}`;
       }
-      
-      // Wait for 5 seconds after blockchain operation
-      await new Promise(resolve => setTimeout(resolve, 5000));
-      
-      return `Successfully created bucket with ID: ${bucket}. You can refer to this bucket as "${bucketName}" in future operations.\nPortal: ${portalUrl}${explorerTxUrl}`;
     } catch (error) {
       return `${ERROR_MESSAGES.FAILED_BUCKET_CREATION} Error: ${error instanceof Error ? error.message : String(error)}`;
     }
@@ -236,19 +277,24 @@ export class ModeriaActionProvider extends ActionProvider<EvmWalletProvider> {
     args: z.infer<typeof CreateServiceListingSchema>
   ): Promise<string> {
     try {
+      // First check if teacher client is initialized
       if (!this.teacherClient) {
         return ERROR_MESSAGES.MISSING_CLIENT;
       }
       
       // Ensure we have a bucket for services
-      if (!this.buckets[BUCKET_NAMES.SERVICES] && this.teacherClient) {
-        // Create a bucket if needed
+      if (!this.buckets[BUCKET_NAMES.SERVICES]) {
+        // Create a bucket specifically for services
         const bucketManager = this.teacherClient.bucketManager();
-        const { result: { bucket } } = await bucketManager.create();
-        this.buckets[BUCKET_NAMES.SERVICES] = bucket;
-        
-        // Wait for 5 seconds after blockchain operation
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        try {
+          const { result: { bucket } } = await bucketManager.create();
+          this.buckets[BUCKET_NAMES.SERVICES] = bucket;
+          
+          // Wait for 5 seconds after blockchain operation
+          await new Promise(resolve => setTimeout(resolve, 5000));
+        } catch (bucketError) {
+          return `${ERROR_MESSAGES.FAILED_BUCKET_CREATION} Error: ${bucketError instanceof Error ? bucketError.message : String(bucketError)}`;
+        }
       }
       
       // Generate service ID
@@ -275,28 +321,25 @@ export class ModeriaActionProvider extends ActionProvider<EvmWalletProvider> {
       const serviceJson = JSON.stringify(serviceListing, null, 2);
       const serviceContent = new TextEncoder().encode(serviceJson);
       const serviceFile = new File([serviceContent], "service.json", { type: "text/plain" });
-      if (this.teacherClient) {
+      
+      try {
+        // We've already checked that teacherClient exists above
         const teacherServiceManager = this.teacherClient.bucketManager();
         await teacherServiceManager.add(
           this.buckets[BUCKET_NAMES.SERVICES] as `0x${string}`,
           serviceListing.objectKey,
           serviceFile
         );
-      } else if (this.studentClient) {
-        // Fall back to student client if teacher client is not available
-        const studentUpdateManager = this.studentClient.bucketManager();
-        await studentUpdateManager.add(
-          this.buckets[BUCKET_NAMES.SERVICES] as `0x${string}`,
-          serviceListing.objectKey,
-          serviceFile
-        );
+      } catch (storeError) {
+        return `${ERROR_MESSAGES.FAILED_OBJECT_ADDITION} Error: ${storeError instanceof Error ? storeError.message : String(storeError)}`;
       }
       
       // Wait for 5 seconds after blockchain operation
       await new Promise(resolve => setTimeout(resolve, 5000));
       
-      // Generate portal URL
-      const portalUrl = `${RECALL_PORTAL_URLS[this.currentRecallNetwork as RecallNetworkType || "testnet"]}/buckets/${this.buckets[BUCKET_NAMES.SERVICES]}?path=${encodeURIComponent(serviceListing.objectKey)}`;
+      // Generate portal URL with proper fallback handling
+      const networkName = this.currentRecallNetwork || "testnet";
+      const portalUrl = `${RECALL_PORTAL_URLS[networkName as RecallNetworkType]}/buckets/${this.buckets[BUCKET_NAMES.SERVICES]}?path=${encodeURIComponent(serviceListing.objectKey)}`;
       
       return `Successfully created service listing with ID: ${serviceId}\nService: ${args.serviceType} by ${args.providerName}\nPrice: ${args.price} USDC\nPortal: ${portalUrl}`;
     } catch (error) {

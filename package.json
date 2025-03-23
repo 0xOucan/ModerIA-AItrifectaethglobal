@@ -13,10 +13,12 @@
     "@recallnet/chains": "^0.0.6",
     "@recallnet/contracts": "^0.0.4",
     "@recallnet/sdk": "^0.0.7",
+    "dotenv": "^16.4.7",
     "next": "15.2.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "viem": "^2.23.14"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -25,6 +27,6 @@
     "@types/react-dom": "^19",
     "tailwindcss": "^4",
     "tsx": "^4.19.3",
-    "typescript": "^5"
+    "typescript": "^5.8.2"
   }
 }

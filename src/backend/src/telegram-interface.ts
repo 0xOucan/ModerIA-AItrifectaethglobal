@@ -59,9 +59,65 @@ export class TelegramInterface {
         "- Joining meetings to analyze service quality\n" +
         "- Generating transcripts and summaries\n" +
         "- Authorizing payments based on quality metrics\n\n" +
-        "Use /help for example commands, /exit to return to terminal, or /kill to shut down the application.",
+        "🌟 *ModerIA*\n" +
+        "- Orchestrating the entire service marketplace workflow\n" +
+        "- Handling network switching between Recall and Base Sepolia\n" +
+        "- Processing secure escrow payments in USDC\n\n" +
+        "Use /help for example commands, /menu for ModerIA workflow, /exit to return to terminal, or /kill to shut down the application.",
         { parse_mode: "Markdown" }
       );
+    });
+
+    // Handle /menu command for ModerIA workflow
+    this.bot.onText(/\/menu/, (msg) => {
+      const chatId = msg.chat.id;
+      if (this.isStarted) {
+        this.bot.sendMessage(
+          chatId,
+          "🌟 *ModerIA - Complete Digital Deal Mediator* allows you to orchestrate the entire service marketplace workflow seamlessly. Here are the key operations you can perform with ModerIA:\n\n" +
+          "1. *Create a Recall Client*: Set up a client for teacher, student, or agent roles.\n" +
+          "   - Example: `Create a Recall client for teacher on testnet`\n\n" +
+          "2. *Create a Recall Bucket*: Store service data in organized buckets.\n" +
+          "   - Example: `Create a Recall bucket named 'service-data'`\n\n" +
+          "3. *Create a Service Listing*: Offer services with detailed metadata.\n" +
+          "   - Example: `Create a service listing for language tutoring at $50 per hour`\n\n" +
+          "4. *List Available Services*: Query available services for booking.\n" +
+          "   - Example: `List available services for language learning`\n\n" +
+          "5. *Book a Service*: Reserve a service as a student.\n" +
+          "   - Example: `Book service XYZ with name 'Alice Johnson'`\n\n" +
+          "6. *Create an Escrow*: Secure funds for a booked service.\n" +
+          "   - Example: `Create an escrow for booking ABC with amount 0.01 USDC`\n\n" +
+          "7. *Join a Meeting*: Participate in a meeting for a booked service.\n" +
+          "   - Example: `Join meeting at https://meet.google.com/abc-def-ghi`\n\n" +
+          "8. *Get Transcript*: Retrieve the transcript for a meeting.\n" +
+          "   - Example: `Get transcript for meeting XYZ`\n\n" +
+          "9. *Analyze Service Quality*: Evaluate the quality of the service based on the meeting transcript.\n" +
+          "   - Example: `Analyze service quality for booking ABC`\n\n" +
+          "10. *Release Funds*: Transfer funds from escrow to the service provider.\n" +
+          "    - Example: `Release funds from escrow for booking ABC`\n\n" +
+          "11. *Complete a Service*: Record the completion of a service with feedback.\n" +
+          "    - Example: `Complete service booking ABC with quality score 5`\n\n" +
+          "If you would like to perform any specific operation or need more details, just let me know! 😊\n\n" +
+          "*Complete Workflow Testing Commands (copy & paste these):*\n\n" +
+          "```\n" +
+          "Create a Recall client for teacher on testnet\n" +
+          "Create a Recall client for student on testnet\n" +
+          "Create a Recall client for agent on testnet\n" +
+          "Create a Recall bucket named 'services-bucket'\n" +
+          "Create a service listing for French language teaching class at 0.01 USDC per hour with meeting link https://meet.google.com/abc-def-ghi\n" +
+          "List available services\n" +
+          "Book service service_XXXXX with name 'Pedro Musk'\n" +
+          "Create an escrow for booking booking_XXXXX with amount 0.01 USDC\n" +
+          "Join meeting at https://meet.google.com/abc-def-ghi\n" +
+          "Get transcript for meeting meeting_XXXXX\n" +
+          "Analyze service quality for meeting meeting_XXXXX and booking booking_XXXXX\n" +
+          "Release funds from escrow escrow_XXXXX\n" +
+          "Complete service booking booking_XXXXX with quality score 95\n" +
+          "```\n\n" +
+          "*(Note: Replace XXXXX with the actual IDs you receive after executing each step)*",
+          { parse_mode: "Markdown" }
+        );
+      }
     });
 
     // Handle /help command
@@ -91,6 +147,9 @@ export class TelegramInterface {
           "- Generate transcript for meeting ABC\n" +
           "- Analyze quality of service XYZ\n" +
           "- Authorize payment based on quality score\n\n" +
+          "🌟 *ModerIA Workflow:*\n" +
+          "- Use /menu to see the complete ModerIA workflow and testing commands\n" +
+          "- ModerIA combines all the above capabilities in a streamlined process\n\n" +
           "Just type your request naturally and I'll help you! 🤖",
           { parse_mode: "Markdown" }
         );
