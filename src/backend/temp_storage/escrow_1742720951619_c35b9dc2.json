@@ -1,0 +1,22 @@
+{
+  "id": "escrow_1742720951619_c35b9dc2",
+  "clientAddress": "0xbdd528C7A63C79Aa30cdfB073dD6cDe8BeF3beb0",
+  "agentAddress": "0x192E35d75e3725509ecA92C0A5185d6245E38182",
+  "providerAddress": "0x32352655D4B99700a4BEEca3Edd7E0e075bcbAa2",
+  "tokenAddress": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+  "amount": "0.01",
+  "serviceId": "service_1742720951615",
+  "status": "released",
+  "createdAt": "2025-03-23T09:09:11.619Z",
+  "updatedAt": "2025-03-23T09:09:12.573Z",
+  "metadata": {
+    "service-type": "language-learning",
+    "service-duration": "30 minutes",
+    "service-date": "2025-03-23T09:09:11.615Z",
+    "provider-name": "French Lessons Pro",
+    "client-name": "Language Student",
+    "release_reason": "Service completed successfully with quality score 8.5/10"
+  },
+  "clientTxHash": "0xdb7d7f2a6652b955af7d3a69160f986cb8c15329c6c6f298e07fdc8bda96bfa3",
+  "releaseTxHash": "0x8db579432ec744d8e99906ad30686f9bf886648c0bc74696a4d419295888b351"
+}

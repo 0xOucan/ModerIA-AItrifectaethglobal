@@ -14,15 +14,25 @@ Moderia creates a secure marketplace where:
 - Payments are held in escrow until successful completion
 - The agent joins calls to take notes and mediate disputes
 
-## 🔐 Secure Data Storage with Nillion DB
+## 🔐 Secure Data Storage with Recall Network
 
-The platform uses Nillion DB for secure, encrypted data storage:
+The platform uses Recall Network for secure, decentralized data storage:
 
-- Service listings are securely stored
+- Service listings are securely stored with rich metadata
 - Bookings and transaction history are tracked
-- Sensitive data is encrypted
-- Meeting links and payment information are protected
+- Meeting data and quality assessments are preserved
+- Payment records and escrow transactions are immutable
 - Review data and dispute information is securely managed
+
+## 💰 Payment Processing with ERC20 Escrow
+
+The platform uses a secure escrow system for USDC token payments:
+
+- Client funds are held in escrow by the agent
+- Payment is only released after service verification
+- Otter AI analyzes service quality to authorize payments
+- All transactions are recorded on Base Sepolia blockchain
+- Complete transparency with transaction history
 
 ## 📊 Database Schema
 
@@ -44,6 +54,12 @@ The platform uses Nillion DB for secure, encrypted data storage:
 - Provider responses
 - Dispute information
 
+### Transaction Collection
+- Escrow details
+- Payment records
+- Token transfers
+- Transaction status
+
 ## 🤖 Mediation Features
 
 ### Service Management
@@ -52,9 +68,10 @@ The platform uses Nillion DB for secure, encrypted data storage:
 - Automatic scheduling
 
 ### Payment Handling
-- Secure payment escrow
-- Release upon completion
+- Secure USDC token escrow on Base Sepolia
+- Release upon quality verification
 - Dispute resolution with partial refunds
+- Complete transaction history
 
 ### Meeting Participation
 - AI joins service calls
@@ -95,7 +112,17 @@ You can access demo mode in two ways:
 Required environment variables:
 ```
 OPENAI_API_KEY=your_openai_api_key_here
+NETWORK_ID=base-sepolia
+NETWORK_ID_2=base-mainnet
+RECALL_NETWORK="testnet"
+
+# Wallet Private Keys
 WALLET_PRIVATE_KEY=your_wallet_private_key_here
+WALLET_PRIVATE_KEY_AGENT=your_agent_wallet_private_key_here
+WALLET_PRIVATE_KEY_PROVIDER=your_provider_wallet_private_key_here
+WALLET_PRIVATE_KEY_CLIENT=your_client_wallet_private_key_here
+
+# Optional for Telegram
 TELEGRAM_BOT_TOKEN=your_telegram_bot_token_here
 
 # Nillion DB Configuration
@@ -127,28 +154,36 @@ SCHEMA_ID_REVIEW=your_schema_id_here
 
 1. **Service Listing**: 
    - Provider creates service (e.g., French lesson on Monday at 3PM)
-   - Details stored in Nillion DB
+   - Details stored in Recall Network with rich metadata
 
 2. **Discovery & Booking**:
    - Client searches for available services
-   - Books and pays for chosen service
-   - Payment held in escrow
+   - Books and pays for chosen service (0.01 USDC)
+   - Payment held in escrow on Base Sepolia
    - Meeting link generated
 
 3. **Service Delivery**:
    - Moderia sends reminders to both parties
-   - Agent joins the call to take notes
+   - Agent joins the call via Otter AI to take notes
    - Service is delivered
 
-4. **Completion & Payment**:
-   - Client confirms completion
-   - Provider receives payment
+4. **Quality Assessment**:
+   - Otter AI analyzes call quality
+   - Generates transcript and summary
+   - Evaluates based on predetermined metrics
+   - Recommends payment authorization
+
+5. **Completion & Payment**:
+   - Upon positive quality assessment
+   - Escrow is released to provider
+   - Transaction recorded in Recall Network
    - Optional reviews submitted
 
-5. **Dispute Resolution** (if needed):
-   - Agent reviews meeting notes
+6. **Dispute Resolution** (if needed):
+   - Agent reviews meeting transcript
    - Makes fair judgment based on evidence
    - Issues appropriate compensation
+   - Updates transaction status
 
 ## 📝 Development
 
