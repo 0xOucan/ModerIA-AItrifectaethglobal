@@ -1,0 +1,131 @@
+
+================================================================================
+>> ERC20 ESCROW ACTION PROVIDER TEST
+================================================================================
+
+
+ Initializing ERC20EscrowActionProvider 
+────────────────────────────────────────
+
+✓ Action provider initialized
+
+Wallet Addresses:
+Agent:    0x192E35d75e3725509ecA92C0A5185d6245E38182
+Provider: 0x32352655D4B99700a4BEEca3Edd7E0e075bcbAa2
+Client:   0xbdd528C7A63C79Aa30cdfB073dD6cDe8BeF3beb0
+
+USDC Token Contract:
+Address: https://sepolia.basescan.org/token/0x036CbD53842c5426634e7929541eC2318f3dCF7e
+
+ 1. Checking USDC Balances 
+───────────────────────────
+
+(node:602826) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `Cursor-0.47.9-x86_64.AppImage --trace-deprecation ...` to show where the warning was created)
+Agent Balance:    5 USDC
+Provider Balance: 5.02 USDC
+Client Balance:   4.98 USDC
+
+ 2. Creating Escrow for Service 
+────────────────────────────────
+
+Client transfers 0.01 USDC to Agent as escrow payment
+✓ Escrow created with ID: escrow_1742722236055_1130e3ae
+Transaction Hash: https://sepolia.basescan.org/tx/0x6c59bc281521fe6258580a824db3edd9877ba879f98739a9b3e8f154d729a160
+Portal Link: Public key not available
+
+ 3. Checking Escrow Details 
+────────────────────────────
+
+Escrow Details:
+{
+  "success": true,
+  "message": "Escrow details retrieved successfully",
+  "data": {
+    "id": "escrow_1742722236055_1130e3ae",
+    "clientAddress": "0xbdd528C7A63C79Aa30cdfB073dD6cDe8BeF3beb0",
+    "agentAddress": "0x192E35d75e3725509ecA92C0A5185d6245E38182",
+    "providerAddress": "0x32352655D4B99700a4BEEca3Edd7E0e075bcbAa2",
+    "tokenAddress": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+    "amount": "0.01",
+    "serviceId": "service_1742722236052",
+    "status": "pending",
+    "createdAt": "2025-03-23T09:30:36.055Z",
+    "updatedAt": "2025-03-23T09:30:36.664Z",
+    "metadata": {
+      "service-type": "language-learning",
+      "service-duration": "30 minutes",
+      "service-date": "2025-03-23T09:30:36.052Z",
+      "provider-name": "French Lessons Pro",
+      "client-name": "Language Student"
+    },
+    "clientTxHash": "0x6c59bc281521fe6258580a824db3edd9877ba879f98739a9b3e8f154d729a160"
+  },
+  "portalLink": "https://testnet.recall.network/demo/escrow-transactions/escrow_1742722236055_1130e3ae",
+  "clientTxLink": "https://sepolia.basescan.org/tx/0x6c59bc281521fe6258580a824db3edd9877ba879f98739a9b3e8f154d729a160"
+}
+
+ 4. Service Completed - Otter AI Analysis 
+──────────────────────────────────────────
+
+Otter AI completed the language learning session analysis:
+✓ Quality score: 8.5/10
+✓ Quality threshold passed
+✓ Student engagement: 9/10
+✓ Learning objectives met: 4/5
+
+Based on the positive analysis, payment can be released to the provider.
+
+ 5. Releasing Escrow to Provider 
+─────────────────────────────────
+
+Agent transfers 0.01 USDC to Provider as payment for completed service
+✓ Escrow released successfully
+Transaction Hash: https://sepolia.basescan.org/tx/0x8a33886b8d59e6ba81a936a63f9b9b1289fa0b5ae22202cc14ecc3a2d3fc0b92
+Portal Link: Public key not available
+
+ 6. Checking Updated Escrow Details 
+────────────────────────────────────
+
+Updated Escrow Details:
+{
+  "success": true,
+  "message": "Escrow details retrieved successfully",
+  "data": {
+    "id": "escrow_1742722236055_1130e3ae",
+    "clientAddress": "0xbdd528C7A63C79Aa30cdfB073dD6cDe8BeF3beb0",
+    "agentAddress": "0x192E35d75e3725509ecA92C0A5185d6245E38182",
+    "providerAddress": "0x32352655D4B99700a4BEEca3Edd7E0e075bcbAa2",
+    "tokenAddress": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+    "amount": "0.01",
+    "serviceId": "service_1742722236052",
+    "status": "released",
+    "createdAt": "2025-03-23T09:30:36.055Z",
+    "updatedAt": "2025-03-23T09:30:37.005Z",
+    "metadata": {
+      "service-type": "language-learning",
+      "service-duration": "30 minutes",
+      "service-date": "2025-03-23T09:30:36.052Z",
+      "provider-name": "French Lessons Pro",
+      "client-name": "Language Student",
+      "release_reason": "Service completed successfully with quality score 8.5/10"
+    },
+    "clientTxHash": "0x6c59bc281521fe6258580a824db3edd9877ba879f98739a9b3e8f154d729a160",
+    "releaseTxHash": "0x8a33886b8d59e6ba81a936a63f9b9b1289fa0b5ae22202cc14ecc3a2d3fc0b92"
+  },
+  "portalLink": "https://testnet.recall.network/demo/escrow-transactions/escrow_1742722236055_1130e3ae",
+  "clientTxLink": "https://sepolia.basescan.org/tx/0x6c59bc281521fe6258580a824db3edd9877ba879f98739a9b3e8f154d729a160",
+  "releaseTxLink": "https://sepolia.basescan.org/tx/0x8a33886b8d59e6ba81a936a63f9b9b1289fa0b5ae22202cc14ecc3a2d3fc0b92"
+}
+
+ 7. Checking Final USDC Balances 
+─────────────────────────────────
+
+Agent Final Balance:    5 USDC
+Provider Final Balance: 5.02 USDC
+Client Final Balance:   4.98 USDC
+
+================================================================================
+>> TEST COMPLETED SUCCESSFULLY
+================================================================================
+

@@ -45,6 +45,10 @@
     "test:types": "tsd --files src/tests/types.test-d.ts",
     "prepack": "tsc",
     "docs": "typedoc --entryPoints ./src --entryPointStrategy expand --exclude ./src/tests/**/*.ts",
-    "docs:serve": "http-server ./docs"
+    "docs:serve": "http-server ./docs",
+    "moderia:demo": "node dist/action-providers/moderia/run-demo.js",
+    "moderia:terminal": "node dist/action-providers/moderia/demo-terminal.js",
+    "moderia:telegram": "node dist/action-providers/moderia/demo-telegram.js",
+    "moderia:test": "node dist/action-providers/moderia/test.js"
   }
 }
