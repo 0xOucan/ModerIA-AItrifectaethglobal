@@ -26,6 +26,28 @@ ModerIA is an intelligent agent that leverages the power of the Recall Network f
   - ⚖️ Dispute resolution
   - 📄 Human-readable data storage
 
+### 💰 ERC20 Escrow
+- Secure escrow system for ERC20 token payments (USDC)
+- Features:
+  - 🔒 Secure escrow transactions for service payments
+  - 💱 USDC token transfer on Base Sepolia
+  - 💼 Token balance checking
+  - ✅ Service completion verification
+  - 💸 Automated payment release
+  - 🔙 Refunds for cancelled services
+  - 📊 Transaction history tracking
+  - 📋 Rich metadata for all transactions
+
+### 🎙️ Otter AI
+- AI-powered call analysis for service quality verification
+- Features:
+  - 📞 Meeting join and recording
+  - 📝 Transcript generation
+  - ✍️ Summary creation
+  - 📊 Quality analysis
+  - 💰 Payment authorization
+  - 📈 Service improvement recommendations
+
 ### 🧪 Recall Test
 - Testing functionality for Recall Network
 - Features:
@@ -67,6 +89,21 @@ ModerIA supports three operating modes:
 - 💰 Process payments for completed services
 - 📈 View service history and analytics
 - 🤝 Resolve disputes between providers and clients
+
+### 💰 Secure Payment System
+- 💰 Create escrow transactions for service payments
+- 💸 Release funds upon quality verification
+- 💱 Process USDC tokens on Base Sepolia
+- 🔙 Refund funds for canceled or disputed services
+- 🔍 Track all payment transactions
+- 📊 Monitor wallet balances
+
+### 🎙️ Service Quality Verification
+- 💼 AI-powered service monitoring
+- 📄 Create detailed transcripts of service delivery
+- 📊 Analyze service quality against standards
+- ✅ Authorize payments based on quality scores
+- 📝 Generate actionable summary reports
 
 ### 💳 Credit Management
 - 💰 Purchase storage credits
@@ -137,6 +174,39 @@ This will simulate the complete lifecycle of a service:
 3. Completing services
 4. Processing payments
 5. Viewing stored data in human-readable format
+
+### 💰 ERC20 Escrow Test
+To test the ERC20 escrow functionality:
+```
+node dist/action-providers/erc20-escrow/test.js
+```
+
+This will demonstrate the complete flow of escrow payments:
+1. Checking USDC balances
+2. Creating escrow transactions
+3. Verifying escrow details
+4. Simulating service completion with Otter AI
+5. Releasing payment to service provider
+6. Checking updated transaction details
+
+#### Demo Mode
+You can also run the test in demo mode without making actual blockchain transactions:
+```
+DEMO_MODE=true node dist/action-providers/erc20-escrow/test.js
+```
+
+### 🎙️ Otter AI Test
+To test the Otter AI action provider:
+```
+node dist/action-providers/otter-ai/test.js
+```
+
+This will simulate:
+1. Joining a virtual meeting
+2. Generating a transcript
+3. Creating a summary
+4. Analyzing call quality
+5. Authorizing payment based on quality
 
 ### 🔄 Recall Network Test
 To test basic Recall Network functionality:
