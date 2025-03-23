@@ -3,7 +3,7 @@ import { ActionProvider, WalletProvider, Network } from "@coinbase/agentkit";
 import { ViemWalletProvider } from "@coinbase/agentkit";
 import { privateKeyToAccount } from "viem/accounts";
 import { baseSepolia } from "viem/chains";
-import { createWalletClient, parseUnits, formatUnits, BaseError, Chain, http } from "viem";
+import { createWalletClient, parseUnits, formatUnits, BaseError, Chain, http, createPublicClient } from "viem";
 import { z } from "zod";
 import * as constants from "./constants.js";
 import {
@@ -34,6 +34,10 @@ export class ERC20EscrowActionProvider extends ActionProvider<ViemWalletProvider
   private agentClient: any = null;
   private providerClient: any = null;
   private clientClient: any = null;
+  private publicClient = createPublicClient({
+    chain: baseSepolia,
+    transport: http()
+  });
   private escrowTransactionsBucketId = constants.ESCROW_TRANSACTIONS_BUCKET_ID;
   private demoMode = process.env.DEMO_MODE === "true";
   private storagePath = path.join(process.cwd(), "temp_storage");
@@ -404,11 +408,11 @@ export class ERC20EscrowActionProvider extends ActionProvider<ViemWalletProvider
         // Generate simulated balances for demo mode
         let balance = "0.00";
         
-        if (args.walletAddress.includes("agent")) {
+        if (args.walletAddress.toLowerCase().includes("agent")) {
           balance = "1.25";
-        } else if (args.walletAddress.includes("provider")) {
+        } else if (args.walletAddress.toLowerCase().includes("provider")) {
           balance = "0.50";
-        } else if (args.walletAddress.includes("client")) {
+        } else if (args.walletAddress.toLowerCase().includes("client")) {
           balance = "5.00";
         } else {
           // Random balance between 0 and 10 USDC
@@ -420,7 +424,7 @@ export class ERC20EscrowActionProvider extends ActionProvider<ViemWalletProvider
 
       const tokenAddress = args.tokenAddress || constants.USDC_TOKEN_ADDRESS_BASE_SEPOLIA;
 
-      const balance = await this.agentClient.readContract({
+      const balance = await this.publicClient.readContract({
         address: tokenAddress as `0x${string}`,
         abi: constants.ERC20_ABI,
         functionName: 'balanceOf',
